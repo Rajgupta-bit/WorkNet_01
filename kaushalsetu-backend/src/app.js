@@ -18,9 +18,8 @@ import {
 const app = express();
 
 app.use(
-  cors({
-    origin:
-      process.env.CLIENT_URL?.split(",") || true,
+    cors({
+    origin: true,
     credentials: true,
   })
 );
