@@ -1,0 +1,1 @@
+import Service from '../models/Service.js'; export const list=async(req,res)=>res.json(await Service.find({active:true}).sort({createdAt:-1})); export const create=async(req,res)=>res.status(201).json(await Service.create(req.body));

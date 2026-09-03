@@ -1,0 +1,1 @@
+import {Router} from 'express';import {list,create} from '../controllers/services.js';import {protect,roles} from '../middleware/auth.js';const r=Router();r.get('/',list);r.post('/',protect,roles('ADMIN'),create);export default r;

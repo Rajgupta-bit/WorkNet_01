@@ -1,0 +1,1 @@
+import {Router} from 'express';import {create,list} from '../controllers/reviews.js';import {protect} from '../middleware/auth.js';const r=Router();r.use(protect);r.post('/',create);r.get('/:providerId',list);export default r;

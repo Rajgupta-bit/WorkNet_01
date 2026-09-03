@@ -1,0 +1,1 @@
+import {Router} from 'express';import {posts,createPost,toggleLike,replies,addReply} from '../controllers/community.js';import {protect} from '../middleware/auth.js';const r=Router();r.use(protect);r.get('/posts',posts);r.post('/posts',createPost);r.post('/posts/:id/like',toggleLike);r.get('/posts/:id/replies',replies);r.post('/posts/:id/replies',addReply);export default r;
