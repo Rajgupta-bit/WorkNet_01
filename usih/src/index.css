@@ -3974,3 +3974,28 @@ body {
   }
 }
 
+
+/* Mobile notification inside hamburger menu */
+.mobile-notification {
+  display: none !important;
+}
+
+@media (max-width: 800px) {
+  .mobile-notification {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+
+    position: relative;
+  }
+
+  .mobile-notification .notification-badge {
+    margin-left: auto;
+    position: static;
+  }
+
+  .header .icon-btn.notification-button {
+    display: none !important;
+  }
+}
+

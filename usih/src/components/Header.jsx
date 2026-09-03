@@ -46,6 +46,24 @@ export default function Header({
         <button onClick={() => go("about")}>About Us</button>
         <button onClick={() => go("provider")}>Become a Provider</button>
         <button onClick={() => go("community")}>Community</button>
+
+        {/* mobile notification */}
+        <button
+          className="mobile-notification"
+          onClick={() => {
+            go("notifications");
+            onReadNotifications?.();
+          }}
+        >
+          <Bell size={18} />
+          <span>Notifications</span>
+
+          {unreadCount > 0 && (
+            <span className="notification-badge">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </span>
+          )}
+        </button>
       </nav>
 
       <div className="header-actions">
@@ -53,7 +71,11 @@ export default function Header({
           <MapPin size={17} /> Find near me
         </button>
 
-        <button className="icon-btn" onClick={() => go("messages")} aria-label="Messages">
+        <button
+          className="icon-btn"
+          onClick={() => go("messages")}
+          aria-label="Messages"
+        >
           <MessageSquare size={19} />
         </button>
 
