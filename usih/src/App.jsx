@@ -346,7 +346,7 @@ export default function App() {
         },
 
         body: JSON.stringify({
-          bookingId: paymentBooking._id,
+          bookingId: targetBooking._id,
         }),
       });
 

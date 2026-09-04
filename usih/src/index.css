@@ -4001,81 +4001,96 @@ body {
 
 /* Payment section inside notification */
 .completion-payment {
-  width: 500px;
+  width: 380px;
   max-width: 100%;
   margin-left: auto;
-  margin-top: 12px;
-  margin-right: 25px;
+  margin-right: 15px;
+  margin-top: 6px;
 }
 
-/* Amount */
-.completion-payment > span {
-  display: block;
-  margin-bottom: 8px;
-}
-
-/* Payment buttons in one row */
 .completion-payment-actions {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
   justify-content: flex-end;
+  gap: 6px;
 }
 
-/* Individual payment button */
+/* Smaller payment buttons */
 .payment-option {
-  width: 190px;
-  min-height: 72px;
-  padding: 12px 14px;
+  width: 143px;
+  height: 50px;
+  padding: 6px 8px;
+
   display: flex;
   align-items: center;
-  gap: 10px;
-  border: 1px solid #d9dee3;
-  border-radius: 14px;
+  gap: 7px;
+
+  border: 1px solid #dce2e6;
+  border-radius: 10px;
   background: #fff;
+
   cursor: pointer;
   text-align: left;
+  overflow: hidden;
+
   transition: all 0.2s ease;
 }
 
 /* Icon */
 .payment-option-icon {
-  font-size: 24px;
-  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 7px;
+  background: #eefafb;
+  font-size: 14px;
 }
 
-/* Text */
+/* Text container */
 .payment-option b {
   display: block;
-  font-size: 14px;
-  margin-bottom: 4px;
+  font-size: 11px;
+  line-height: 14px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .payment-option span {
   display: block;
-  font-size: 12px;
-  color: #888;
+  font-size: 8px;
+  line-height: 11px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Hover */
-.payment-option:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-
-@media (max-width: 650px) {
+@media (max-width: 750px) {
   .completion-payment {
     width: 100%;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 8px 0 0;
   }
 
   .completion-payment-actions {
-    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .payment-option {
-    width: 100%;
+    width: 140px;
+    height: 48px;
+    padding: 6px 7px;
+  }
+
+  .payment-option-icon {
+    width: 23px;
+    min-width: 23px;
+    height: 23px;
+    font-size: 13px;
   }
 }
