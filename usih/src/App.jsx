@@ -15,9 +15,9 @@ import Login from "./pages/Login";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 
 export default function App() {
- const [page, setPage] = useState(() => {
-  return localStorage.getItem("cgs_current_page") || "home";
-});
+  const [page, setPage] = useState(() => {
+    return localStorage.getItem("cgs_current_page") || "home";
+  });
 
   const [user, setUser] = useState(() => {
     try {
@@ -52,8 +52,8 @@ export default function App() {
   }, [page]);
 
   useEffect(() => {
-  localStorage.setItem("cgs_current_page", page);
-}, [page]);
+    localStorage.setItem("cgs_current_page", page);
+  }, [page]);
 
   useEffect(() => {
     if (!toast) return;
@@ -213,25 +213,25 @@ export default function App() {
     setPage("home");
   };
 
- const protectedNavigation = (next, serviceName = "") => {
-  const protectedPages = [
-    "provider",
-    "provider-dashboard",
-    "profile",
-    "notifications",
-  ];
+  const protectedNavigation = (next, serviceName = "") => {
+    const protectedPages = [
+      "provider",
+      "provider-dashboard",
+      "profile",
+      "notifications",
+    ];
 
-  if (protectedPages.includes(next) && !user) {
-    setPage("login");
-    return;
-  }
+    if (protectedPages.includes(next) && !user) {
+      setPage("login");
+      return;
+    }
 
-  if (next === "services") {
-    setSelectedService(serviceName);
-  }
+    if (next === "services") {
+      setSelectedService(serviceName);
+    }
 
-  setPage(next);
-};
+    setPage(next);
+  };
 
   /*
   |--------------------------------------------------------------------------
@@ -297,14 +297,6 @@ export default function App() {
     setBooking(null);
 
     /*
-     * IMPORTANT:
-     * Open payment window after booking
-     * has been successfully created.
-     */
-
-    setPaymentBooking(data);
-
-    /*
      * Update local bookings immediately.
      */
 
@@ -327,8 +319,10 @@ export default function App() {
   |--------------------------------------------------------------------------
   */
 
-  const payCash = async () => {
-    if (!paymentBooking?._id) {
+  const payCash = async (bookingOverride = null) => {
+    const targetBooking = bookingOverride || paymentBooking;
+
+    if (!targetBooking?._id) {
       return;
     }
 
@@ -393,8 +387,10 @@ export default function App() {
   |--------------------------------------------------------------------------
   */
 
-  const payOnline = async () => {
-    if (!paymentBooking?._id) {
+  const payOnline = async (bookingOverride = null) => {
+    const targetBooking = bookingOverride || paymentBooking;
+
+    if (!targetBooking?._id) {
       return;
     }
 
@@ -449,7 +445,7 @@ export default function App() {
         },
 
         body: JSON.stringify({
-          bookingId: paymentBooking._id,
+          bookingId: targetBooking._id,
         }),
       });
 
@@ -473,7 +469,9 @@ export default function App() {
         name: "KaushalSetu",
 
         description: `Payment for ${
-          paymentBooking.serviceId?.name || "Service"
+          targetBooking.serviceId?.name ||
+          targetBooking.service?.name ||
+          "Service"
         }`,
 
         order_id: orderData.orderId,
@@ -504,7 +502,7 @@ export default function App() {
               },
 
               body: JSON.stringify({
-                bookingId: paymentBooking._id,
+                bookingId: targetBooking._id,
 
                 razorpay_order_id: paymentResponse.razorpay_order_id,
 
@@ -632,6 +630,16 @@ export default function App() {
   |--------------------------------------------------------------------------
   */
 
+  const getBookingFromNotification = (notification) => {
+    const booking = notification?.bookingId;
+
+    if (booking && typeof booking === "object") {
+      return booking;
+    }
+
+    return bookings.find((item) => item._id === booking);
+  };
+
   const confirmWorkCompletion = async (notification, completed) => {
     const token = localStorage.getItem("cgs_token");
 
@@ -756,14 +764,11 @@ export default function App() {
     content = <Home onNavigate={protectedNavigation} />;
   }
 
- if (page === "services") {
-  content = (
-    <Services
-      onBook={setBooking}
-      selectedService={selectedService}
-    />
-  );
-}
+  if (page === "services") {
+    content = (
+      <Services onBook={setBooking} selectedService={selectedService} />
+    );
+  }
 
   if (page === "how") {
     content = <HowItWorks />;
@@ -896,9 +901,74 @@ export default function App() {
                     {isCompletion && responded && (
                       <div className="completion-response">
                         {n.completionConfirmed ? (
-                          <span>
-                            ✓ You confirmed that the work was completed.
-                          </span>
+                          <>
+                            <span>
+                              ✓ You confirmed that the work was completed.
+                            </span>
+
+                            {(() => {
+                              const completionBooking =
+                                getBookingFromNotification(n);
+                              const paymentStatus =
+                                completionBooking?.paymentStatus || "PENDING";
+
+                              if (paymentStatus === "PAID") {
+                                return (
+                                  <div className="completion-payment-paid">
+                                    ✓ Payment completed
+                                  </div>
+                                );
+                              }
+
+                              if (!completionBooking?._id) {
+                                return null;
+                              }
+
+                              return (
+                                <div className="completion-payment">
+                                  <strong>Complete payment</strong>
+
+                                  <span>
+                                    Amount: ₹{completionBooking.amount || 0}
+                                  </span>
+
+                                  <div className="completion-payment-actions">
+                                    <button
+                                      className="payment-option"
+                                      disabled={paymentLoading}
+                                      onClick={() => payCash(completionBooking)}
+                                    >
+                                      <div className="payment-option-icon">
+                                        💵
+                                      </div>
+
+                                      <div>
+                                        <b>Cash</b>
+                                        <span>Pay in cash</span>
+                                      </div>
+                                    </button>
+
+                                    <button
+                                      className="payment-option"
+                                      disabled={paymentLoading}
+                                      onClick={() =>
+                                        payOnline(completionBooking)
+                                      }
+                                    >
+                                      <div className="payment-option-icon">
+                                        💳
+                                      </div>
+
+                                      <div>
+                                        <b>Online Payment</b>
+                                        <span>Pay securely with Razorpay</span>
+                                      </div>
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </>
                         ) : (
                           <span>
                             ✕ You reported that the work was not completed.
@@ -1052,17 +1122,7 @@ export default function App() {
                           </button>
                         )}
 
-                      {b.paymentStatus !== "PAID" && !cancelled && (
-                        <button
-                          className="primary-btn"
-                          onClick={() => setPaymentBooking(b)}
-                          style={{
-                            marginTop: "10px",
-                          }}
-                        >
-                          Pay ₹{b.amount}
-                        </button>
-                      )}
+                      
                     </div>
                   </div>
                 );
