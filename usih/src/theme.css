@@ -637,7 +637,7 @@ select:focus-visible {
 /* ---------- Steps / How it works ---------- */
 .step-number,
 .step-icon {
-  background: var(--ks-teal) !important;
+  background: hsl(0deg 0% 100%) !important;
   color: var(--ks-dark) !important;
   border-color: rgba(0, 173, 181, 0.35) !important;
 }
@@ -680,6 +680,8 @@ select:focus-visible {
 .auth-card,
 .provider-form {
   border-top: 4px solid var(--ks-teal) !important;
+      box-shadow: 7px 5px 5px #101f45;
+          background: #f9fffe;
 }
 
 .auth-icon,

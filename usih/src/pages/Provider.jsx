@@ -210,8 +210,8 @@ const skillOptions = [
       </div>
 
       {error && <div className="form-error">{error}</div>}
-
-      <form className="provider-form" onSubmit={submit}>
+  <div className="form-box">
+          <form className="provider-form" onSubmit={submit}>
         {/* NAME */}
 
         <label className="modal-label">
@@ -337,6 +337,7 @@ const skillOptions = [
           {submitting ? "Creating profile..." : "Create Provider Profile"}
         </button>
       </form>
+    </div>  
     </section>
   );
 }
