@@ -64,8 +64,8 @@ select:focus-visible {
   min-height: 76px;
   height: 76px;
   padding: 0 4.5%;
-  background:rgb(87 18 91 / 97%) !important;
   border-bottom: 1px solid rgba(0, 173, 181, 0.30) !important;
+  
   box-shadow: 0 8px 28px rgba(34, 40, 49, 0.16);
   backdrop-filter: blur(12px);
 }

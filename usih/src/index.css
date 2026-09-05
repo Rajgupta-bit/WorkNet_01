@@ -36,7 +36,7 @@ a {
   align-items: center;
   gap: 30px;
   border-bottom: 1px solid #e5ebe7;
-  background: #fff;
+  /* background: rgb(1, 0, 0)404; */
   position: sticky;
   top: 0;
   z-index: 50;
@@ -3594,7 +3594,7 @@ a {
 
   z-index: 99999 !important;
 
-  background: #222831 !important;
+  background: #000000 !important;
 
   border-bottom: 2px solid #00adb5 !important;
 
